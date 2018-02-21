@@ -18,7 +18,7 @@ class App extends Component {
         age: 21
       }
     ],
-    showPersons: true
+    showPersons: false
   };
 
   togglePersonsHandle = () => {
@@ -57,32 +57,38 @@ class App extends Component {
       cursor: "pointer"
     };
 
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          <Person
+            name={this.state.persons[0].name}
+            age={this.state.persons[0].age}
+            changed={this.nameChangeHandler}
+          />
+          <Person
+            name={this.state.persons[1].name}
+            age={this.state.persons[1].age}
+          >
+            I am a children of the Person Component
+          </Person>
+          <Person
+            name={this.state.persons[2].name}
+            age={this.state.persons[2].age}
+          // click={this.switchNameHandler.bind(this, "Maximilien")}
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1> Hello React </h1>
         <button style={style} onClick={() => this.togglePersonsHandle()}>
           Show/Hide Persons
         </button>
-        {this.state.showPersons ?
-          <div>
-            <Person
-              name={this.state.persons[0].name}
-              age={this.state.persons[0].age}
-              changed={this.nameChangeHandler}
-            />
-            <Person
-              name={this.state.persons[1].name}
-              age={this.state.persons[1].age}
-            >
-              I am a children of the Person Component
-          </Person>
-            <Person
-              name={this.state.persons[2].name}
-              age={this.state.persons[2].age}
-            // click={this.switchNameHandler.bind(this, "Maximilien")}
-            />
-          </div> : null
-        }
+        {persons}
       </div>
     );
   }
