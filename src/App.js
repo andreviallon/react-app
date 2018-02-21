@@ -1,24 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
 import Person from "./Person/Person";
+import person from "./Person/Person";
 
 class App extends Component {
   state = {
     persons: [
-      {
-        name: "Andre",
-        age: 22
-      },
-      {
-        name: "Max",
-        age: 21
-      },
-      {
-        name: "Sabrina",
-        age: 21
-      }
+      { id: "wea", name: "Andre", age: 22 },
+      { id: "dwad", name: "Max", age: 21 },
+      { id: "awdasda", name: "Sabrina", age: 21 }
     ],
-    showPersons: false
+    showPersons: true
   };
 
   togglePersonsHandle = () => {
@@ -26,26 +18,31 @@ class App extends Component {
     this.setState({
       showPersons: !doesShow
     });
-  }
-
-  nameChangeHandler = event => {
-    this.setState({
-      persons: [
-        {
-          name: event.target.value,
-          age: 22
-        },
-        {
-          name: "Max",
-          age: 21
-        },
-        {
-          name: "Sabrina",
-          age: 21
-        }
-      ]
-    });
   };
+
+  deletePersonHandler = personId => {
+    //in this case, the const persons is only a point and does not hold a value, this is why it can change
+    // const persons = this.state.persons.slice();
+    //ES6 way with spread operators
+    //Use it to not mutate the original array or object
+    const persons = [...this.state.persons];
+    persons.splice(personId, 1);
+    this.setState({ persons: persons });
+  };
+
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    const person = { ...this.state.persons[personIndex] };
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons });
+  }
 
   render() {
     //Styling scoped to the component and not global
@@ -62,22 +59,17 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-            changed={this.nameChangeHandler}
-          />
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-          >
-            I am a children of the Person Component
-          </Person>
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age}
-          // click={this.switchNameHandler.bind(this, "Maximilien")}
-          />
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                key={person.id}
+                changed={(event) => this.nameChangeHandler(event, person.id)}
+              />
+            );
+          })}
         </div>
       );
     }
