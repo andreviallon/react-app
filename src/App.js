@@ -17,27 +17,16 @@ class App extends Component {
         name: "Sabrina",
         age: 21
       }
-    ]
+    ],
+    showPersons: true
   };
 
-  switchNameHandler = newName => {
+  togglePersonsHandle = () => {
+    const doesShow = this.state.showPersons;
     this.setState({
-      persons: [
-        {
-          name: newName,
-          age: 30
-        },
-        {
-          name: "Max",
-          age: 29
-        },
-        {
-          name: "Sabrina",
-          age: 23
-        }
-      ]
+      showPersons: !doesShow
     });
-  };
+  }
 
   nameChangeHandler = event => {
     this.setState({
@@ -59,28 +48,41 @@ class App extends Component {
   };
 
   render() {
+    //Styling scoped to the component and not global
+    const style = {
+      backgroundColor: "white",
+      font: "inherit",
+      border: "1px solid blue",
+      padding: "8px",
+      cursor: "pointer"
+    };
+
     return (
       <div className="App">
         <h1> Hello React </h1>
-        <button onClick={() => this.switchNameHandler("Viallon")}>
-          Switch Name
+        <button style={style} onClick={() => this.togglePersonsHandle()}>
+          Show/Hide Persons
         </button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-          changed={this.nameChangeHandler}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-        >
-          I am a children of the Person Component
-        </Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-          click={this.switchNameHandler.bind(this, "Maximilien")}
-        />
+        {this.state.showPersons ?
+          <div>
+            <Person
+              name={this.state.persons[0].name}
+              age={this.state.persons[0].age}
+              changed={this.nameChangeHandler}
+            />
+            <Person
+              name={this.state.persons[1].name}
+              age={this.state.persons[1].age}
+            >
+              I am a children of the Person Component
+          </Person>
+            <Person
+              name={this.state.persons[2].name}
+              age={this.state.persons[2].age}
+            // click={this.switchNameHandler.bind(this, "Maximilien")}
+            />
+          </div> : null
+        }
       </div>
     );
   }
