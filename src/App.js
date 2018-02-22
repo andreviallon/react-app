@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
+import Radium, { StyleRoot } from "radium";
 import Person from "./Person/Person";
-import person from "./Person/Person";
 
 class App extends Component {
   state = {
@@ -47,12 +47,27 @@ class App extends Component {
   render() {
     //Styling scoped to the component and not global
     const style = {
-      backgroundColor: "white",
+      backgroundColor: "green",
+      color: "white",
       font: "inherit",
       border: "1px solid blue",
       padding: "8px",
-      cursor: "pointer"
+      cursor: "pointer",
+      ":hover": {
+        backgroundColor: "lightgreen",
+        color: "black"
+      }
     };
+
+    //Add css classes conditionally 
+    const classes = [];
+
+    if (this.state.persons.length <= 2) {
+      classes.push("red"); //classes = ["red"]
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push("bold"); //classes = ["red", "bold"]
+    }
 
     let persons = null;
 
@@ -72,18 +87,28 @@ class App extends Component {
           })}
         </div>
       );
+
+      style.backgroundColor = "red";
+      style[":hover"] = {
+        backgroundColor: "salmon",
+        color: "black"
+      };
+
     }
 
     return (
-      <div className="App">
-        <h1> Hello React </h1>
-        <button style={style} onClick={() => this.togglePersonsHandle()}>
-          Show/Hide Persons
+      <StyleRoot>
+        <div className="App">
+          <h1> Hello React </h1>
+          <p className={classes.join(" ")} >This is really working!</p>
+          <button style={style} onClick={() => this.togglePersonsHandle()}>
+            Show/Hide Persons
         </button>
-        {persons}
-      </div>
+          {persons}
+        </div>
+      </StyleRoot>
     );
   }
 }
 
-export default App;
+export default Radium(App);
