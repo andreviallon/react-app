@@ -1,4 +1,4 @@
-*{
+.app{
     text-align: center;
 }
 
@@ -8,4 +8,27 @@
 
 .bold{
     font-weight: bold;
+}
+
+.app button {
+    border: black 1px solid;
+    padding: 16px;
+    font: inherit;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+
+.app button:hover{
+    color: black;
+    background-color: lightgreen;
+}
+
+.app button.Red {
+    background-color: red;
+}
+
+.app button.Red:hover {
+    background-color: salmon;
+    color: black;
 }
